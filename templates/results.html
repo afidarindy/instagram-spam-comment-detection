@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        td {
+            background-color: #ffffff;
+        }
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Results</h1>
+
+        <!-- Metrics Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    {% for model in results.keys() %}
+                    <th>{{ model }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Accuracy</td>
+                    {% for metrics in results.values() %}
+                    <td>{{ metrics['accuracy'] }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>Recall</td>
+                    {% for metrics in results.values() %}
+                    <td>{{ metrics['recall'] }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>Precision</td>
+                    {% for metrics in results.values() %}
+                    <td>{{ metrics['precision'] }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>F-Score</td>
+                    {% for metrics in results.values() %}
+                    <td>{{ metrics['fscore'] }}</td>
+                    {% endfor %}
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Confusion Matrices and Classification Reports -->
+        {% for model, metrics in results.items() %}
+        <div>
+            <h3>{{ model }} Confusion Matrix</h3>
+            <img src="data:image/png;base64,{{ metrics['confusion_matrix'] }}" alt="Confusion Matrix">
+            <h3>{{ model }} Classification Report</h3>
+            <pre>{{ metrics['report'] | tojson(indent=2) }}</pre>
+        </div>
+        {% endfor %}
+
+        <a href="/">Upload Another Dataset</a>
+        <a href="/logout">Logout</a>
+    </div>
+</body>
+</html>
