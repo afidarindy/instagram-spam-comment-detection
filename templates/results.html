@@ -58,7 +58,7 @@
             padding: 1rem;
             overflow-x: auto;
         }
-        a {
+        a, button {
             display: inline-block;
             margin-top: 1rem;
             padding: 0.75rem 1.5rem;
@@ -124,8 +124,106 @@
         </div>
         {% endfor %}
 
+        <button onclick="saveResults()">Simpan</button>
         <a href="/">Upload Another Dataset</a>
         <a href="/logout">Logout</a>
     </div>
+    <div class="container">
+        <h1>Laporan Kinerja Algoritma</h1>
+
+        <!-- Metrics Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Dataset File</th>
+                    <th>Result File</th>
+                    <th>Best Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2024-08-01</td>
+                    <td>administrator@gmail.com</td>
+                    <td><a href="">Download</a></td>
+                    <td><a href="">Download</a></td>
+                    <td>Random Forest (0.97686755)</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>2024-08-01</td>
+                    <td>administrator@gmail.com</td>
+                    <td><a href="">Download</a></td>
+                    <td><a href="">Download</a></td>
+                    <td>Random Forest (0.97686755)</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>2024-08-01</td>
+                    <td>administrator@gmail.com</td>
+                    <td><a href="">Download</a></td>
+                    <td><a href="">Download</a></td>
+                    <td>Random Forest (0.97686755)</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>2024-08-01</td>
+                    <td>administrator@gmail.com</td>
+                    <td><a href="">Download</a></td>
+                    <td><a href="">Download</a></td>
+                    <td>Random Forest (0.97686755)</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>2024-08-01</td>
+                    <td>administrator@gmail.com</td>
+                    <td><a href="">Download</a></td>
+                    <td><a href="">Download</a></td>
+                    <td>Random Forest (0.97686755)</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>2024-08-01</td>
+                    <td>administrator@gmail.com</td>
+                    <td><a href="">Download</a></td>
+                    <td><a href="">Download</a></td>
+                    <td>Random Forest (0.97686755)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Confusion Matrices and Classification Reports -->
+        {% for model, metrics in results.items() %}
+        <div>
+            <h3>{{ model }} Confusion Matrix</h3>
+            <img src="data:image/png;base64,{{ metrics['confusion_matrix'] }}" alt="Confusion Matrix">
+            <h3>{{ model }} Classification Report</h3>
+            <pre>{{ metrics['report'] | tojson(indent=2) }}</pre>
+        </div>
+        {% endfor %}
+
+        <button onclick="saveResults()">Simpan</button>
+        <a href="/">Upload Another Dataset</a>
+        <a href="/logout">Logout</a>
+    </div>
+    <script>
+    function saveResults() {
+    fetch('{{ url_for("save_results") }}', {
+        method: 'POST'
+    }).then(response => {
+        if (response.ok) {
+            alert('Results saved successfully.');
+        } else {
+            alert('Failed to save results.');
+        }
+    }).catch(error => {
+        alert('Error: ' + error.message);
+    });
+}
+
+    </script>
 </body>
 </html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons a {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .buttons a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>History</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Dataset File</th>
+                    <th>Result File</th>
+                    <th>Best Performance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in history %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ record.timestamp }}</td>
+                    <td><a href="{{ url_for('download_file', filename=record.dataset_file) }}">{{ record.dataset_file }}</a></td>
+                    <td><a href="{{ url_for('download_file', filename=record.result_file) }}">{{ record.result_file }}</a></td>
+                    <td>{{ record.best_algorithm }} ({{ record.highest_accuracy }})</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="buttons">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+</body>
+</html>
